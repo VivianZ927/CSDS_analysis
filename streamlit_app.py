@@ -206,10 +206,11 @@ with tab2:
 
     st.divider()
     st.markdown("**Seasonal comparison for the selected tests (mean)**")
-    comp = long_df.loc[long_df["Test"].isin(selected_tests)].copy()
-    comp = comp.loc[(comp["SAMPLE DATE/TIME"].dt.date >= start_date) & (comp["SAMPLE DATE/TIME"].dt.date <= end_date)].copy()
-    comp_mean = comp.groupby(["Test", "Season", "SeasonOrder"], as_index=False)["Value"].mean()
 
+    comp = long_df.loc[long_df["Test"] == single_test].copy()
+    comp = comp.loc[
+        (comp["SAMPLE DATE/TIME"].dt.date >= start_date) & (comp["SAMPLE DATE/TIME"].dt.date <= end_date)].copy()
+    comp_mean = comp.groupby(["Season", "SeasonOrder"], as_index=False)["Value"].mean()
 
     bar = (
         alt.Chart(comp_mean)
@@ -217,11 +218,9 @@ with tab2:
         .encode(
             x=alt.X("SeasonOrder:N", title="Season", sort=["Spring", "Summer", "Autumn", "Winter"]),
             y=alt.Y("Value:Q", title="Mean value"),
-            color=alt.Color("Test:N", title="Test"),
-            column=alt.Column("Test:N", title=None, header=alt.Header(labelAngle=0)),
-            tooltip=[alt.Tooltip("Test:N"), alt.Tooltip("Season:N"), alt.Tooltip("Value:Q", format=".4g")],
+            tooltip=[alt.Tooltip("Season:N"), alt.Tooltip("Value:Q", format=".4g")],
         )
-    ).resolve_scale(y="independent")
+    )
     st.altair_chart(bar, use_container_width=True)
 
 
