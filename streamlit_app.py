@@ -205,7 +205,7 @@ with tab2:
         st.altair_chart(line, use_container_width=True)
 
     st.divider()
-    st.markdown("**Seasonal comparison for the selected tests (mean)**")
+    st.markdown("**Seasonal comparison for the selected test (mean)**")
 
     comp = long_df.loc[long_df["Test"] == single_test].copy()
     comp = comp.loc[
@@ -222,6 +222,7 @@ with tab2:
         )
     )
     st.altair_chart(bar, use_container_width=True)
+
 
 
 st.caption("Seasons use the meteorological definition for the Northern Hemisphere: Winter (Dec–Feb), Spring (Mar–May), Summer (Jun–Aug), Autumn (Sep–Nov).")
